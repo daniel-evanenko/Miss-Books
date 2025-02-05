@@ -1,0 +1,14 @@
+:root {
+    --clr1: rgb(27, 58, 75); /* Midnight Blue */
+    --clr2: rgb(201, 166, 107); /* Muted Gold */
+
+    --clr1bg: rgb(153, 166, 149); /* Muted Green */
+    --clr1bg-light: rgb(205, 221, 200); /* Lighter Green */
+    --clr2bg: rgb(233, 206, 221); /* Soft Pink */
+    --clr2bg-light: rgb(253, 236, 246); /* Lighter Pink */
+
+    --gray1: rgb(240, 240, 240); /* Light Gray */
+    --gray2: rgb(155, 155, 155); /* Medium Gray */
+    --gray3: rgb(44, 44, 44); /* Dark Gray for Text */
+
+}
