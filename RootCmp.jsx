@@ -7,9 +7,6 @@ import { Vision } from "./cmps/AboutCmps/Vision.jsx"
 import { AppHeader } from "./cmps/AppHeader.jsx"
 import { NotFound } from "./cmps/NotFound.jsx"
 import { AboutUs } from "./pages/AboutUs.jsx"
-import { CarDetails } from "./pages/CarDetails.jsx"
-import { CarEdit } from "./pages/CarEdit.jsx"
-import { CarIndex } from "./pages/CarIndex.jsx"
 import { HomePage } from "./pages/HomePage.jsx"
 
 
