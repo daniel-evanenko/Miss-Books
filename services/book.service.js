@@ -4,7 +4,7 @@ import { storageService } from './async-storage.service.js'
 const BOOK_KEY = 'bookDB'
 _createBooks()
 
-export const carService = {
+export const bookService = {
     query,
     get,
     remove,
@@ -13,18 +13,8 @@ export const carService = {
     getDefaultFilter,
 }
 
-function query(filterBy = {}) {
+function query() {
     return storageService.query(BOOK_KEY)
-        // .then(books => {
-        //     if (filterBy.txt) {
-        //         const regExp = new RegExp(filterBy.txt, 'i')
-        //         books = books.filter(book => regExp.test(car.vendor))
-        //     }
-        //     if (filterBy.minSpeed) {
-        //         books = books.filter(car => car.speed >= filterBy.minSpeed)
-        //     }
-        //     return books
-        // })
 }
 
 function get(bookId) {
@@ -36,11 +26,11 @@ function remove(bookId) {
     return storageService.remove(BOOK_KEY, bookId)
 }
 
-function save(car) {
-    if (car.id) {
-        return storageService.put(BOOK_KEY, car)
+function save(book) {
+    if (book.id) {
+        return storageService.put(BOOK_KEY, book)
     } else {
-        return storageService.post(BOOK_KEY, car)
+        return storageService.post(BOOK_KEY, book)
     }
 }
 
@@ -56,7 +46,7 @@ function getDefaultFilter() {
 
 function _setNextPrevBookId(book) {
     return query().then((books) => {
-        const bookIdx = books.findIndex((currCar) => currCar.id === book.id)
+        const bookIdx = books.findIndex((currbook) => currbook.id === book.id)
         const nextBook = books[bookIdx + 1] ? books[bookIdx + 1] : books[0]
         const prevBook = books[bookIdx - 1] ? books[bookIdx - 1] : books[books.length - 1]
         book.nextBookId = nextBook.id
