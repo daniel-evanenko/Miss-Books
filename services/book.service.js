@@ -20,6 +20,10 @@ function query() {
 function get(bookId) {
     return storageService.get(BOOK_KEY, bookId)
         .then(_setNextPrevBookId)
+        .catch((err)=> {
+            console.log(err);
+        })
+        
 }
 
 function remove(bookId) {
