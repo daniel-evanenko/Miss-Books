@@ -13,8 +13,18 @@ export const bookService = {
     getDefaultFilter,
 }
 
-function query() {
+function query(filterBy = {}) {
     return storageService.query(BOOK_KEY)
+        .then(books => {
+            if (filterBy.title) {
+                const regExp = new RegExp(filterBy.title, 'i')
+                books = books.filter(book => regExp.test(book.title))
+            }
+            if (filterBy.amount) {
+                books = books.filter(book => book.listPrice.amount == filterBy.amount)
+            }
+            return books
+        })
 }
 
 function get(bookId) {
@@ -44,7 +54,7 @@ function getEmptyBook(title = '', listPrice = {amount:'',currencyCode : '', isOn
 
 
 function getDefaultFilter() {
-    return { price: '', onSale: '' }
+    return { title: '', amount: '' }
 }
 
 

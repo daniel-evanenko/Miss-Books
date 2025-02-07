@@ -18,4 +18,5 @@
 @import "cmps/app-header.css";
 @import "cmps/book-list.css";
 @import "cmps/book-preview.css";
+@import "cmps/book-filter.css";
 @import "cmps/not-found.css";

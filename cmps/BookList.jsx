@@ -2,14 +2,8 @@ import { BookPreview } from "./BookPreview.jsx"
 const { Link } = ReactRouterDOM
 
 export function BookList({ books, onRemovebook }) {
-
-    const ulAttributes = {
-        title: 'Some Pop Up',
-        className: 'book-list'
-    }
-    
     return (
-        <ul {...ulAttributes}>
+        <ul className='book-list' title='Some Pop Up' >
             {books.map(book =>
                 <li key={book.id}>
                     <BookPreview book={book} />
