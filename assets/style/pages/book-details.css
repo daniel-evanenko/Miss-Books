@@ -1,7 +1,7 @@
 .book-details {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     padding-bottom: 15vh;
 }
@@ -18,4 +18,90 @@
     max-width: 200px;
     display: block;
     margin: auto;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.sale-banner {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.book-status {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid;
+    width: fit-content;
+    margin-inline-end: 10px;
+}
+
+/* Serious Reading - Deep, Intense Color */
+.serious-reading {
+    background-color: rgb(165, 42, 42);  /* Deep Brown */
+    border-color: rgb(120, 30, 30);      /* Darker Brown */
+    color: white;                        /* White for readability */
+}
+
+/* Descent Reading - Warm & Balanced */
+.descent-reading {
+    background-color: rgb(235, 184, 93);  /* Warm Golden Yellow */
+    border-color: rgb(168, 124, 50);      /* Darker Gold */
+    color: rgb(58, 33, 0);                /* Darker Gold for text */
+}
+
+/* Light Reading - Soft and Relaxed */
+.light-reading {
+    background-color: rgb(146, 212, 255);  /* Soft Sky Blue */
+    border-color: rgb(58, 158, 218);       /* Medium Blue */
+    color: rgb(28, 66, 100);               /* Deep Blue */
+}
+
+/* Short Read - Subtle & Neutral */
+.short-read {
+    background-color: rgb(225, 225, 225);  /* Light Gray */
+    border-color: rgb(180, 180, 180);      /* Medium Gray */
+    color: rgb(80, 80, 80);                /* Darker Gray */
+}
+
+/* Vintage Books - Classic & Aged Look */
+.vintage {
+    background-color: rgb(210, 180, 140);  /* Tan/Brown (Aged Paper Look) */
+    border-color: rgb(139, 69, 19);        /* Saddle Brown */
+    color: rgb(80, 40, 0);                 /* Dark Brown */
+}
+
+/* New Books - Fresh & Vibrant */
+.new {
+    background-color: rgb(144, 238, 144);  /* Soft Green (Fresh) */
+    border-color: rgb(34, 139, 34);        /* Forest Green */
+    color: rgb(25, 90, 25);                /* Dark Green */
+}
+
+/* Recent Books - Professional & Modern */
+.recent {
+    background-color: rgb(240, 240, 255);  /* Soft Blue-Gray */
+    border-color: rgb(120, 120, 180);      /* Cool Blue */
+    color: rgb(50, 50, 90);                /* Deep Blue-Gray */
+}
+
+.on-sale{
+    color: red;
+}
+.reg-price{
+    color: green;
 }
