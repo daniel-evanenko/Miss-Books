@@ -1,18 +1,22 @@
-import { bookService } from "../services/book.service.js";
+import {bookService} from "../services/book.service.js";
 
-const { useState, useEffect } = React;
-const { useNavigate, useParams, Link } = ReactRouterDOM;
+const {useState, useEffect} = React;
+const {useNavigate, useParams, Link} = ReactRouterDOM;
 
 export function BookEdit() {
-  const [bookToEdit, setBookToEdit] = useState(bookService.getEmptyBook());
-  const [isLoading, setIsLoading] = useState(false);
+  const [bookToEdit,
+    setBookToEdit] = useState(bookService.getEmptyBook());
+  const [isLoading,
+    setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { bookId } = useParams();
+  const {bookId} = useParams();
 
   useEffect(() => {
-    if (bookId) loadBook();
-  }, [bookId]);
+    if (bookId) 
+      loadBook();
+    }
+  , [bookId]);
 
   function loadBook() {
     setIsLoading(true);
@@ -24,7 +28,7 @@ export function BookEdit() {
       .catch((err) => {
         console.log("Cannot load book:", err);
       })
-      .finally(() => setIsLoading(false));
+      . finally(() => setIsLoading(false));
   }
 
   function onSaveBook(ev) {
@@ -37,33 +41,44 @@ export function BookEdit() {
       .catch((err) => {
         console.log("Cannot save book:", err);
       })
-      .finally(() => navigate("/book"));
+      . finally(() => navigate("/book"));
   }
 
-  function handleChange({ target }) {
-    let { value, name: field } = target;
+  function handleChange({target}) {
+    let {value, name: field} = target;
 
     switch (field) {
       case "listPrice":
         setBookToEdit((prevBook) => ({
           ...prevBook,
-          [field]: { ...prevBook.listPrice, amount: value },
+          [field]: {
+            ...prevBook.listPrice,
+            amount: value
+          }
         }));
         break;
-    case 'title':
-        setBookToEdit((prevBook) => ({ ...prevBook, [field]: value }))
+      case 'title':
+        setBookToEdit((prevBook) => ({
+          ...prevBook,
+          [field]: value
+        }))
       default:
         break;
     }
 
   }
 
-  const { title, listPrice } = bookToEdit;
-  const loadingClass = isLoading ? "loading" : "";
+  const {title, listPrice} = bookToEdit;
+  const loadingClass = isLoading
+    ? "loading"
+    : "";
 
   return (
     <section className={`book-edit ${loadingClass}`}>
-      <h1>{bookId ? "Edit" : "Add"} Book</h1>
+      <h1>{bookId
+          ? "Edit"
+          : "Add"}
+        Book</h1>
       <form onSubmit={onSaveBook}>
         <label htmlFor="title">title</label>
         <input
@@ -72,7 +87,7 @@ export function BookEdit() {
           type="text"
           name="title"
           id="title"
-        />
+          required/>
 
         <label htmlFor="listPrice">Price</label>
         <input
@@ -81,7 +96,7 @@ export function BookEdit() {
           type="number"
           name="listPrice"
           id="listPrice"
-        />
+          required/>
         <section className="btns flex">
           <button>Save</button>
           <button type="button" className="back-btn">

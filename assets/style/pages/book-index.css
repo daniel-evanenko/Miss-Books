@@ -1,3 +1,22 @@
 .book-index{
     
 }
+
+.add-book-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--clr2); /* Muted Gold */
+    background-color: var(--clr1); /* Midnight Blue */
+    border: 2px solid var(--clr2); /* Muted Gold */
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .add-book-button:hover {
+    background-color: var(--clr2); /* Muted Gold */
+    color: var(--clr1); /* Midnight Blue */
+    border-color: var(--clr1); /* Midnight Blue */
+  }
