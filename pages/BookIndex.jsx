@@ -7,7 +7,7 @@ export function BookIndex() {
 
   const [books,
     setbooks] = useState(null)
-  const [filterBy,setFilterBy] = useState({title:'',amount:''})
+  const [filterBy,setFilterBy] = useState(bookService.getDefaultFilter())
 
   useEffect(() => {
     loadbooks()
