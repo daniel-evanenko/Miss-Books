@@ -13,20 +13,26 @@ export const bookService = {
 }
 
 async function query(filterBy = {}) {
-  const books = await storageService
-    .query(BOOK_KEY)
-  if (filterBy.title) {
-    const regExp = new RegExp(filterBy.title, 'i')
-    books = books.filter(book => regExp.test(book.title))
-  }
-  if (filterBy.amount) {
-    books = books.filter(book_1 => book_1.listPrice.amount >= filterBy.amount)
-  }
-  console.log(books); // debug
-  console.log(filterBy); // debug
+  try {
+    const books = await storageService.query(BOOK_KEY); // ✅ books is constant
 
-  return books
+    let filteredBooks = [...books]; // ✅ Create a new variable for filtering
   
+    if (filterBy.title) {
+      const regExp = new RegExp(filterBy.title, 'i');
+      filteredBooks = filteredBooks.filter(book => regExp.test(book.title));
+    }
+  
+    if (filterBy.amount) {
+      filteredBooks = filteredBooks.filter(book => book.listPrice.amount >= filterBy.amount);
+    }
+  
+    return filteredBooks; // ✅ Return the new filtered array
+
+  } catch (error) {
+    console.log(error);
+    
+  }
 }
 
 async function get(bookId) {

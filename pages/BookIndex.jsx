@@ -1,18 +1,20 @@
-const {useEffect, useState} = React
-const {Link} = ReactRouterDOM
-import {BookFilter} from "../cmps/BookFilter.jsx"
-import {bookService} from "../services/book.service.js"
-import {BookList} from "../cmps/BookList.jsx"
-export function BookIndex() {
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { BookFilter } from "../cmps/BookFilter.jsx";
+import { bookService } from "../services/book.service.js";
+import { BookList } from "../cmps/BookList.jsx";
 
-  const [books,setBooks] = useState(null)
-  const [filterBy,setFilterBy] = useState(bookService.getDefaultFilter())
+export function BookIndex() {
+  const [books, setBooks] = useState(null);
+  const [filterBy, setFilterBy] = useState(() => bookService.getDefaultFilter());
 
   useEffect(() => {
-    loadBooks()
-  }, [filterBy])
+    loadBooks();
+  }, [filterBy]);
 
   function loadBooks() {
+    console.log("Current filter:", filterBy); // Debugging
+
     bookService
       .query(filterBy)
       .then(books => {
@@ -23,36 +25,34 @@ export function BookIndex() {
         console.log("Cannot get books:", err);
       });
   }
-  
 
-  function onRemovebook(bookId) {
+  function onRemoveBook(bookId) {
     bookService
       .remove(bookId)
       .then(() => {
-        setBooks(books => books.filter(book => book.id !== bookId))
+        setBooks(prevBooks => prevBooks.filter(book => book.id !== bookId));
       })
       .catch(err => {
-        console.log('Cannot remove book:', err)
-      })
+        console.log("Cannot remove book:", err);
+      });
   }
 
-  function onSetFilter(filterBy) {
+  function onSetFilter(updatedFilter) {
     setFilterBy(prevFilter => ({
       ...prevFilter,
-      ...filterBy
-    }))
+      ...updatedFilter
+    }));
   }
-  if (!books) 
-    return <div class="loader">Loading...</div>
+
+  if (!books) return <div className="loader">Loading...</div>;
 
   return (
     <section className="book-index">
-      <BookFilter onSetFilter={onSetFilter} filterBy={filterBy}/>
+      <BookFilter onSetFilter={onSetFilter} filterBy={filterBy} />
       <Link to="/book/edit" className="add-book-button">
         Add book
       </Link>
-      <BookList books={books} onRemoveBook={onRemovebook}/>
+      <BookList books={books} onRemoveBook={onRemoveBook} />
     </section>
-  )
-
+  );
 }
