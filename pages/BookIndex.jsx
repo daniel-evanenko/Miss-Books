@@ -5,28 +5,31 @@ import {bookService} from "../services/book.service.js"
 import {BookList} from "../cmps/BookList.jsx"
 export function BookIndex() {
 
-  const [books,
-    setbooks] = useState(null)
+  const [books,setBooks] = useState(null)
   const [filterBy,setFilterBy] = useState(bookService.getDefaultFilter())
 
   useEffect(() => {
-    loadbooks()
+    loadBooks()
   }, [filterBy])
 
-  function loadbooks() {
+  function loadBooks() {
     bookService
       .query(filterBy)
-      .then(setbooks)
-      .catch(err => {
-        console.log('Cannot get books:', err)
+      .then(books => {
+        console.log("Books loaded:", books); // Debugging
+        setBooks(books);
       })
+      .catch(err => {
+        console.log("Cannot get books:", err);
+      });
   }
+  
 
   function onRemovebook(bookId) {
     bookService
       .remove(bookId)
       .then(() => {
-        setbooks(books => books.filter(book => book.id !== bookId))
+        setBooks(books => books.filter(book => book.id !== bookId))
       })
       .catch(err => {
         console.log('Cannot remove book:', err)
