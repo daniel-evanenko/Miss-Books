@@ -110,7 +110,7 @@ function _createBookObject() {
     subtitle: makeLorem(4),
     authors: [makeLorem(1)],
     publishedDate: getRandomIntInclusive(1950, 2024),
-    description: makeLorem(20),
+    description: makeLorem(120),
     pageCount: getRandomIntInclusive(20, 600),
     categories: [categories[getRandomIntInclusive(0, categories.length - 1)]],
     thumbnail: `https://www.coding-academy.org/books-photos/${getRandomIntInclusive(1, 20)}.jpg`,

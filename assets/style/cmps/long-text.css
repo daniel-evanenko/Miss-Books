@@ -1,0 +1,19 @@
+.long-text{
+
+}
+
+.read-more-btn {
+    margin-left: 5px;
+    color: blue;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Disable hover styles */
+.read-more-btn:hover {
+    color: inherit;  /* Keeps the default text color */
+    background: none;
+    border: none;
+    cursor: default; /* Prevents hover pointer effect */
+}

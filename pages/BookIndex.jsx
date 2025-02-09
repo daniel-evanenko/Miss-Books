@@ -13,12 +13,9 @@ export function BookIndex() {
   }, [filterBy]);
 
   function loadBooks() {
-    console.log("Current filter:", filterBy); // Debugging
-
     bookService
       .query(filterBy)
       .then(books => {
-        console.log("Books loaded:", books); // Debugging
         setBooks(books);
       })
       .catch(err => {

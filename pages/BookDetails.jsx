@@ -1,5 +1,5 @@
 import {bookService} from "../services/book.service.js"
-
+import {LongTxt} from "../cmps/LongTxt.jsx"
 const {useState, useEffect} = React
 const {useParams, useNavigate, Link} = ReactRouterDOM
 
@@ -22,6 +22,7 @@ export function BookDetails() {
       .catch(err => {
         console.log('Cannot load book:', err)
       })
+
   }
 
   function onBack() {
@@ -66,7 +67,9 @@ export function BookDetails() {
         <p className={`book-status ${checkPageCount()}`}>{checkPageCount().replace(/-/g, " ")}</p>
         <p>Published: {book.publishedDate}
         </p>
-        <p>Description: {book.description}</p>
+        <p>Description:
+        </p>
+        <LongTxt txt={book.description}/>
         <p>Page Count: {book.pageCount}
           pages
         </p>
