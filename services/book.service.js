@@ -80,6 +80,7 @@ async function _setNextPrevBookId(book) {
 function _createBooks() {
   let books = loadFromStorage(BOOK_KEY)
   if (!books || !books.length) {
+    books = [];
     for (let i = 0; i < 20; i++) {
       const book = _createBookObject()
       books.push(book)
