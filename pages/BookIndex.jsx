@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+const {useState, useEffect} = React;
 import { Link } from "react-router-dom";
 import { BookFilter } from "../cmps/BookFilter.jsx";
 import { bookService } from "../services/book.service.js";
