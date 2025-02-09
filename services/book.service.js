@@ -22,7 +22,11 @@ async function query(filterBy = {}) {
   if (filterBy.amount) {
     books = books.filter(book_1 => book_1.listPrice.amount >= filterBy.amount)
   }
+  console.log(books); // debug
+  console.log(filterBy); // debug
+
   return books
+  
 }
 
 async function get(bookId) {
