@@ -1,14 +1,13 @@
-const {useState, useEffect} = React
+const {useState, useEffect, useRef} = React
+import { debounce } from "../services/util.service.js"
 
 export function BookFilter({filterBy, onSetFilter}) {
 
-  const [filterByToEdit,
-    setFilterByToEdit] = useState({
-    ...filterBy
-  })
+  const [filterByToEdit,setFilterByToEdit] = useState({...filterBy})
+  const onSetFilterDebounce = useRef(debounce(onSetFilter)).current
 
   useEffect(() => {
-    onSetFilter(filterByToEdit)
+    onSetFilterDebounce(filterByToEdit)
   }, [filterByToEdit])
 
   function handleChange({target}) {
