@@ -1,5 +1,7 @@
 import {bookService} from "../services/book.service.js"
 import {LongTxt} from "../cmps/LongTxt.jsx"
+import {AddReview} from "../cmps/AddReview.jsx"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 const {useState, useEffect} = React
 const {useParams, useNavigate, Link} = ReactRouterDOM
 
@@ -51,25 +53,50 @@ export function BookDetails() {
       return "recent"; // Books between 1 and 10 years old
     }
   
+  async function onAddReview(review) {
+    try {
+      const updatedBook = await bookService.addReview(book.id, review)
+      showSuccessMsg("added review successfully");
+    } catch (error) {
+      showErrorMsg("cant add review");
+
+    }
+  }
+
   if (!book) 
     return <div class="loader">Loading...</div>
 
   return (
     <section className="book-details">
-      <div>
+      <div className="card">
+        <section>
+          <button>
+            <Link to={`/book/${book.prevBookId}`}>{"<-Prev book"}
+            </Link>
+          </button>
+          <button>
+            <Link to={`/book/${book.nextBookId}`}>
+              {"Next book->"}</Link>
+          </button>
+        </section>
         <h1>Book Title: {book.title}</h1>
         <h2>Subtitle: {book.subtitle}</h2>
         <h3>Author(s): {book
             .authors
             .join(', ')}</h3>
-        <p className={`book-status ${checkPublishDate()}`}>{checkPublishDate()}
-        </p>
+        <p className={`book-status ${checkPublishDate()}`}>{checkPublishDate()}</p>
         <p className={`book-status ${checkPageCount()}`}>{checkPageCount().replace(/-/g, " ")}</p>
+
+        <div>
+          <div className="image-container">
+            {book.listPrice.isOnSale && <span className="sale-banner">SALE</span>}
+            <img src={book.thumbnail} alt={book.title}/>
+          </div>
+        </div>
+
         <p>Published: {book.publishedDate}
         </p>
-        <p>Description:
-        </p>
-        <LongTxt txt={book.description}/>
+
         <p>Page Count: {book.pageCount}
           pages
         </p>
@@ -79,12 +106,6 @@ export function BookDetails() {
         <p>Language: {book
             .language
             .toUpperCase()}</p>
-
-        <div className="image-container">
-          {book.listPrice.isOnSale && <span className="sale-banner">SALE</span>}
-          <img src={book.thumbnail} alt={book.title}/>
-        </div>
-
         <p>
           Price:
           <span
@@ -95,17 +116,12 @@ export function BookDetails() {
             {book.listPrice.currencyCode}
           </span>
         </p>
+        <div>Description:
+          <LongTxt txt={book.description}/>
+        </div>
 
-        <button onClick={onBack}>Back</button>
+        <AddReview addReview={onAddReview}/>
 
-        <section>
-          <button>
-            <Link to={`/book/${book.prevBookId}`}>Prev book</Link>
-          </button>
-          <button>
-            <Link to={`/book/${book.nextBookId}`}>Next book</Link>
-          </button>
-        </section>
       </div>
 
     </section>

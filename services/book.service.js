@@ -9,7 +9,9 @@ export const bookService = {
   remove,
   save,
   getEmptyBook,
-  getDefaultFilter
+  getDefaultFilter,
+  addReview,
+  getDefaultReview
 }
 
 async function query(filterBy = {}) {
@@ -119,6 +121,25 @@ function _createBookObject() {
       amount: getRandomIntInclusive(80, 500),
       currencyCode: "EUR",
       isOnSale: Math.random() > 0.7
-    }
+    },
+    reviews:[]
   };
+}
+
+
+async function addReview(bookId, review){
+  try {
+    review.id = makeId()
+    let book = await storageService.get(BOOK_KEY, bookId)
+    book.reviews.push(review)
+    book = await storageService.put(BOOK_KEY,book);
+    return _setNextPrevBookId(book)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function getDefaultReview(){
+  return {id: '', fullName: '', rating: '1', readAt: ''}
 }
