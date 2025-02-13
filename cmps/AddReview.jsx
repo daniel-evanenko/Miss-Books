@@ -2,7 +2,7 @@ import {bookService} from "../services/book.service.js";
 
 const {useState} = React;
 
-export function AddReview({addReview}) {
+export function AddReview({addReview, isLoading}) {
 
   const [review,
     setReview] = useState(bookService.getDefaultReview());
@@ -50,13 +50,18 @@ export function AddReview({addReview}) {
 
         <label htmlFor="readAt">Read at:</label>
         <input
+          required
           onChange={handleChange}
           value={review.readAt}
           type="date"
           id="readAt"
           name="readAt"/>
 
-        <button>Add</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading
+            ? "Adding..."
+            : "Add"}
+        </button>
       </form>
     </section>
   );

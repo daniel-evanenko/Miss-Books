@@ -1,16 +1,20 @@
 import {bookService} from "../services/book.service.js"
 import {LongTxt} from "../cmps/LongTxt.jsx"
 import {AddReview} from "../cmps/AddReview.jsx"
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import {showErrorMsg, showSuccessMsg} from "../services/event-bus.service.js"
 const {useState, useEffect} = React
-const {useParams, useNavigate, Link} = ReactRouterDOM
+const {useParams, Link} = ReactRouterDOM
 
 export function BookDetails() {
 
   const [book,
     setbook] = useState(null)
+  const [reviews,
+    setReviews] = useState([])
+  const [loadingStates,
+    setLoadingStates] = useState({});
+
   const params = useParams()
-  const navigate = useNavigate()
 
   useEffect(() => {
     loadbook()
@@ -20,15 +24,14 @@ export function BookDetails() {
     setbook(null)
     bookService
       .get(params.bookId)
-      .then(setbook)
+      .then((book) => {
+        setbook(book)
+        setReviews(book.reviews)
+      })
       .catch(err => {
         console.log('Cannot load book:', err)
       })
 
-  }
-
-  function onBack() {
-    navigate('/book')
   }
 
   function checkPageCount() {
@@ -54,12 +57,43 @@ export function BookDetails() {
     }
   
   async function onAddReview(review) {
+    setLoadingStates((prev) => ({
+      ...prev,
+      adding: true
+    })); 
     try {
-      const updatedBook = await bookService.addReview(book.id, review)
-      showSuccessMsg("added review successfully");
+      const updatedBook = await bookService.addReview(book.id, review);
+      setReviews(updatedBook.reviews);
+      showSuccessMsg("Added review successfully");
     } catch (error) {
-      showErrorMsg("cant add review");
+      console.log(error);
+      showErrorMsg("Error adding review");
+    } finally {
+      setLoadingStates((prev) => ({
+        ...prev,
+        adding: false
+      })); 
+    }
+  }
 
+  async function onDeleteReview(reviewId) {
+    setLoadingStates((prev) => ({
+      ...prev,
+      [reviewId]: true
+    })); 
+
+    try {
+      const updatedBook = await bookService.removeReview(book.id, reviewId);
+      setReviews(updatedBook.reviews);
+      showSuccessMsg("Review removed successfully");
+    } catch (error) {
+      console.log(error);
+      showErrorMsg("Error removing review");
+    } finally {
+      setLoadingStates((prev) => ({
+        ...prev,
+        [reviewId]: false
+      })); 
     }
   }
 
@@ -120,8 +154,32 @@ export function BookDetails() {
           <LongTxt txt={book.description}/>
         </div>
 
-        <AddReview addReview={onAddReview}/>
+        <AddReview addReview={onAddReview} isLoading={loadingStates.adding}/>
 
+        <div>
+          <h3>Reviews</h3>
+          <ul className="review-list">
+            {reviews.length > 0
+              ? (reviews.map((review) => (
+                <li className="review-item" key={review.id}>
+                  <span className="name">{review.fullName}</span>
+                  <span className="rating">⭐ {review.rating}/5</span>
+                  <span className="date">📅 {review.readAt}</span>
+                  <button
+                    className="delete-btn"
+                    onClick={() => onDeleteReview(review.id)}
+                    disabled={loadingStates[review.id]}>
+                    {loadingStates[review.id]
+                      ? "Removing..."
+                      : "Delete"}
+                  </button>
+                </li>
+              )))
+              : (
+                <li className="no-reviews">No reviews available</li>
+              )}
+          </ul>
+        </div>
       </div>
 
     </section>

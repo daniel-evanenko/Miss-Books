@@ -11,7 +11,8 @@ export const bookService = {
   getEmptyBook,
   getDefaultFilter,
   addReview,
-  getDefaultReview
+  getDefaultReview,
+  removeReview
 }
 
 async function query(filterBy = {}) {
@@ -19,28 +20,27 @@ async function query(filterBy = {}) {
     const books = await storageService.query(BOOK_KEY); // ✅ books is constant
 
     let filteredBooks = [...books]; // ✅ Create a new variable for filtering
-  
+
     if (filterBy.title) {
       const regExp = new RegExp(filterBy.title, 'i');
       filteredBooks = filteredBooks.filter(book => regExp.test(book.title));
     }
-  
+
     if (filterBy.amount) {
       filteredBooks = filteredBooks.filter(book => book.listPrice.amount >= filterBy.amount);
     }
-  
+
     return filteredBooks; // ✅ Return the new filtered array
 
   } catch (error) {
     console.log(error);
-    
+
   }
 }
 
 async function get(bookId) {
   try {
-    const book = await storageService
-      .get(BOOK_KEY, bookId)
+    const book = await storageService.get(BOOK_KEY, bookId)
     return _setNextPrevBookId(book)
   } catch (err) {
     console.log(err)
@@ -122,24 +122,36 @@ function _createBookObject() {
       currencyCode: "EUR",
       isOnSale: Math.random() > 0.7
     },
-    reviews:[]
+    reviews: []
   };
 }
 
-
-async function addReview(bookId, review){
+async function addReview(bookId, review) {
   try {
-    review.id = makeId()
     let book = await storageService.get(BOOK_KEY, bookId)
-    book.reviews.push(review)
-    book = await storageService.put(BOOK_KEY,book);
-    return _setNextPrevBookId(book)
-
+    review.id = makeId()
+    book
+      .reviews
+      .push(review)
+    return await storageService.put(BOOK_KEY, book);
   } catch (error) {
     console.log(error)
   }
 }
 
-function getDefaultReview(){
+async function removeReview(bookId, reviewId) {
+  try {
+    let book = await storageService.get(BOOK_KEY, bookId)
+    book.reviews = book
+      .reviews
+      .filter((review) => review.id !== reviewId);
+    return await storageService.put(BOOK_KEY, book);
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+function getDefaultReview() {
   return {id: '', fullName: '', rating: '1', readAt: ''}
 }
