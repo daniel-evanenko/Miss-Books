@@ -12,7 +12,8 @@ export const bookService = {
   getDefaultFilter,
   addReview,
   getDefaultReview,
-  removeReview
+  removeReview,
+  getFilterFromSearchParams
 }
 
 async function query(filterBy = {}) {
@@ -154,4 +155,13 @@ async function removeReview(bookId, reviewId) {
 
 function getDefaultReview() {
   return {id: '', fullName: '', rating: '1', readAt: ''}
+}
+
+function getFilterFromSearchParams(searchParams){
+  const defaultFilter = getDefaultFilter()
+  const filterBy = {}
+  for(const field in defaultFilter){
+    filterBy[field] = searchParams.get(field) || defaultFilter[field]
+  }
+  return filterBy;
 }
