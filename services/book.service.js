@@ -13,7 +13,8 @@ export const bookService = {
   addReview,
   getDefaultReview,
   removeReview,
-  getFilterFromSearchParams
+  getFilterFromSearchParams,
+  getCategoriesStats
 }
 
 async function query(filterBy = {}) {
@@ -164,4 +165,31 @@ function getFilterFromSearchParams(searchParams){
     filterBy[field] = searchParams.get(field) || defaultFilter[field]
   }
   return filterBy;
+}
+
+async function getCategoriesStats() {
+  try {
+    const books = await storageService.query(BOOK_KEY);
+
+    const bookCountByCategoryMap = _getBookCountByCategoryMap(books);
+
+    const data = Object.keys(bookCountByCategoryMap).map((category) => ({
+      title: category,
+      value: Math.round((bookCountByCategoryMap[category] / books.length) * 100),
+    }));
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching category stats:', error);
+    throw error;
+  }
+}
+
+
+function _getBookCountByCategoryMap(books) {
+  const allCategories = books.flatMap(book => book.categories);
+  return allCategories.reduce((acc, category) => {
+    acc[category] = (acc[category] || 0) + 1;
+    return acc;
+  }, {});
 }

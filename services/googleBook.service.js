@@ -8,7 +8,6 @@ export const googleBookService = {
 
 async function query(txt) {
   try {
-    // TODO : use ajax
     let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${txt}`);
     const data = await response.json();
     return data;

@@ -11,6 +11,7 @@ import { AboutUs } from "./pages/AboutUs.jsx"
 import { BookDetails } from "./pages/BookDetails.jsx"
 import { BookEdit } from "./pages/BookEdit.jsx"
 import { BookIndex } from "./pages/BookIndex.jsx"
+import { Dashboard } from "./pages/Dashboard.jsx"
 import { HomePage } from "./pages/HomePage.jsx"
 
 
@@ -24,6 +25,7 @@ export function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/home" />} />
                         <Route path="/home" element={<HomePage />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/about" element={<AboutUs />} >
                             <Route path="/about/team" element={<Team />} />
                             <Route path="/about/vision" element={<Vision />} />
