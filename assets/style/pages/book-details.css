@@ -122,7 +122,7 @@
   .review-item {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     padding: 8px;
     border-bottom: 1px solid #ddd;

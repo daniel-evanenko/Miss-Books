@@ -1,11 +1,13 @@
 import {bookService} from "../services/book.service.js";
+import { RateByStars } from "./DynamicRevireCmps/RateByStars.jsx";
 
 const {useState} = React;
 
 export function AddReview({addReview, isLoading}) {
 
-  const [review,
-    setReview] = useState(bookService.getDefaultReview());
+  const [review, setReview] = useState(bookService.getDefaultReview());
+
+  const [cmpType, setCmpType] = useState('selectBox')
 
   function onAddReview(ev) {
     ev.preventDefault();
@@ -14,12 +16,12 @@ export function AddReview({addReview, isLoading}) {
   }
 
   function handleChange({target}) {
-    let {value, name: field} = target
-    switch (target.type) {
-      case 'checkbox':
-        value = target.checked
-        break
+    let {value, name: field} = target;
+
+    if (target.type === 'checkbox') {
+      value = target.checked;
     }
+
     setReview((prevReview) => ({
       ...prevReview,
       [field]: value
@@ -29,6 +31,16 @@ export function AddReview({addReview, isLoading}) {
   return (
     <section className="add-review">
       <h1>Add review</h1>
+
+      <div>
+        <label htmlFor="rating">Rating options:</label>
+        <select onChange={(ev) => setCmpType(ev.target.value)} value={cmpType}>
+          <option value="selectBox">SelectBox</option>
+          <option value="textBox">TextBox</option>
+          <option value="rateByStars">RateByStars</option>
+
+        </select>
+      </div>
       <form onSubmit={onAddReview}>
         <label htmlFor="fullName">Fullname:</label>
         <input
@@ -39,15 +51,6 @@ export function AddReview({addReview, isLoading}) {
           id="fullName"
           required/>
 
-        <label htmlFor="rating">Rating:</label>
-        <select onChange={handleChange} value={review.rating} name="rating" id="rating">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-
         <label htmlFor="readAt">Read at:</label>
         <input
           required
@@ -57,6 +60,11 @@ export function AddReview({addReview, isLoading}) {
           id="readAt"
           name="readAt"/>
 
+        <DynamicCmp
+          type={cmpType}
+          val={review.rating}
+          onChangeVal={handleChange}/>
+
         <button type="submit" disabled={isLoading}>
           {isLoading
             ? "Adding..."
@@ -65,4 +73,41 @@ export function AddReview({addReview, isLoading}) {
       </form>
     </section>
   );
+}
+
+const inlineStyle = {
+  display: 'inline'
+}
+function TextBox({val = {},name ,onChangeVal}) {
+  return (
+    <div style={inlineStyle}>
+      <label htmlFor={name}>Rating:</label>
+      <input type="text" name={name} value={val.toString()} onChange={onChangeVal}/>
+    </div>
+  );
+}
+
+function SelectBox({val = {},name ,onChangeVal}) {
+  const opts = [1, 2, 3, 4, 5];
+  return (
+    <div style={inlineStyle}>
+      <label htmlFor={name}>Rating:</label>
+      <select value={val} onChange={onChangeVal} name={name}>
+        {opts.map(opt => (
+          <option key={opt} value={opt}>{opt}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function DynamicCmp(props) {
+  switch (props.type) {
+    case 'textBox':
+      return <TextBox name="rating" {...props}/>
+    case 'selectBox':
+      return <SelectBox name="rating" {...props}/>
+    case 'rateByStars':
+      return <RateByStars  name="rating" {...props}/>
+  }
 }

@@ -155,7 +155,7 @@ async function removeReview(bookId, reviewId) {
 }
 
 function getDefaultReview() {
-  return {id: '', fullName: '', rating: '1', readAt: ''}
+  return {id: '', fullName: '', rating: '', readAt: ''}
 }
 
 function getFilterFromSearchParams(searchParams){

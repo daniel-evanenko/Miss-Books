@@ -56,3 +56,7 @@ export function getTruthyValues(obj) {
     }
     return newObj
 }
+
+export function isNumber(value) {
+    return typeof value === 'number' && !isNaN(value);
+}

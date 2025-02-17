@@ -2,6 +2,8 @@ import {bookService} from "../services/book.service.js"
 import {LongTxt} from "../cmps/LongTxt.jsx"
 import {AddReview} from "../cmps/AddReview.jsx"
 import {showErrorMsg, showSuccessMsg} from "../services/event-bus.service.js"
+import { RateByStars } from "../cmps/DynamicRevireCmps/RateByStars.jsx"
+import { isNumber } from "../services/util.service.js"
 const {useState, useEffect} = React
 const {useParams, Link} = ReactRouterDOM
 
@@ -60,7 +62,7 @@ export function BookDetails() {
     setLoadingStates((prev) => ({
       ...prev,
       adding: true
-    })); 
+    }));
     try {
       const updatedBook = await bookService.addReview(book.id, review);
       setReviews(updatedBook.reviews);
@@ -72,7 +74,7 @@ export function BookDetails() {
       setLoadingStates((prev) => ({
         ...prev,
         adding: false
-      })); 
+      }));
     }
   }
 
@@ -80,7 +82,7 @@ export function BookDetails() {
     setLoadingStates((prev) => ({
       ...prev,
       [reviewId]: true
-    })); 
+    }));
 
     try {
       const updatedBook = await bookService.removeReview(book.id, reviewId);
@@ -93,7 +95,7 @@ export function BookDetails() {
       setLoadingStates((prev) => ({
         ...prev,
         [reviewId]: false
-      })); 
+      }));
     }
   }
 
@@ -163,7 +165,7 @@ export function BookDetails() {
               ? (reviews.map((review) => (
                 <li className="review-item" key={review.id}>
                   <span className="name">{review.fullName}</span>
-                  <span className="rating">⭐ {review.rating}/5</span>
+                   <span className="rating">{review.rating && isNumber(review.rating) ? <RateByStars val={review.rating} readOnly /> : review.rating }</span>
                   <span className="date">📅 {review.readAt}</span>
                   <button
                     className="delete-btn"
@@ -179,6 +181,7 @@ export function BookDetails() {
                 <li className="no-reviews">No reviews available</li>
               )}
           </ul>
+
         </div>
       </div>
 
