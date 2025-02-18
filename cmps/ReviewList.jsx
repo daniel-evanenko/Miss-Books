@@ -1,6 +1,6 @@
 import { ReviewPreview } from "./ReviewPreview.jsx";
 
-export function ReviewList({reviews, deleteReview, loadingState}) {
+export function ReviewList({reviews = [], deleteReview, loadingState}) {
   return (
     <div>
       <h3>Reviews</h3>

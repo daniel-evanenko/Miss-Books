@@ -1,5 +1,5 @@
 const {useEffect, useState} = React
-import {Chart} from '../cmps/Chart.jsx'
+import {Chart} from '../cmps/chart.jsx'
 import {bookService} from '../services/book.service.js'
 
 export function Dashboard() {
