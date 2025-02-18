@@ -2,8 +2,7 @@ import {bookService} from "../services/book.service.js"
 import {LongTxt} from "../cmps/LongTxt.jsx"
 import {AddReview} from "../cmps/AddReview.jsx"
 import {showErrorMsg, showSuccessMsg} from "../services/event-bus.service.js"
-import { RateByStars } from "../cmps/DynamicRevireCmps/RateByStars.jsx"
-import { isNumber } from "../services/util.service.js"
+import { ReviewList } from "../cmps/ReviewList.jsx"
 const {useState, useEffect} = React
 const {useParams, Link} = ReactRouterDOM
 
@@ -158,31 +157,7 @@ export function BookDetails() {
 
         <AddReview addReview={onAddReview} isLoading={loadingStates.adding}/>
 
-        <div>
-          <h3>Reviews</h3>
-          <ul className="review-list">
-            {reviews.length > 0
-              ? (reviews.map((review) => (
-                <li className="review-item" key={review.id}>
-                  <span className="name">{review.fullName}</span>
-                   <span className="rating">{review.rating && isNumber(review.rating) ? <RateByStars val={review.rating} readOnly /> : review.rating }</span>
-                  <span className="date">📅 {review.readAt}</span>
-                  <button
-                    className="delete-btn"
-                    onClick={() => onDeleteReview(review.id)}
-                    disabled={loadingStates[review.id]}>
-                    {loadingStates[review.id]
-                      ? "Removing..."
-                      : "Delete"}
-                  </button>
-                </li>
-              )))
-              : (
-                <li className="no-reviews">No reviews available</li>
-              )}
-          </ul>
-
-        </div>
+        <ReviewList reviews={reviews} deleteReview={onDeleteReview} loadingState={loadingStates} />
       </div>
 
     </section>

@@ -1,5 +1,7 @@
 import {bookService} from "../services/book.service.js";
 import { RateByStars } from "./DynamicRevireCmps/RateByStars.jsx";
+import { SelectBoxRating } from "./DynamicRevireCmps/SelectBoxRating.jsx";
+import { TextBoxRating } from "./DynamicRevireCmps/TextBoxRating.jsx";
 
 const {useState} = React;
 
@@ -17,9 +19,10 @@ export function AddReview({addReview, isLoading}) {
 
   function handleChange({target}) {
     let {value, name: field} = target;
-
     if (target.type === 'checkbox') {
       value = target.checked;
+    }else if (target.type === 'select-one'){
+      value = +value;
     }
 
     setReview((prevReview) => ({
@@ -75,38 +78,13 @@ export function AddReview({addReview, isLoading}) {
   );
 }
 
-const inlineStyle = {
-  display: 'inline'
-}
-function TextBox({val = {},name ,onChangeVal}) {
-  return (
-    <div style={inlineStyle}>
-      <label htmlFor={name}>Rating:</label>
-      <input type="text" name={name} value={val.toString()} onChange={onChangeVal}/>
-    </div>
-  );
-}
-
-function SelectBox({val = {},name ,onChangeVal}) {
-  const opts = [1, 2, 3, 4, 5];
-  return (
-    <div style={inlineStyle}>
-      <label htmlFor={name}>Rating:</label>
-      <select value={val} onChange={onChangeVal} name={name}>
-        {opts.map(opt => (
-          <option key={opt} value={opt}>{opt}</option>
-        ))}
-      </select>
-    </div>
-  );
-}
 
 function DynamicCmp(props) {
   switch (props.type) {
     case 'textBox':
-      return <TextBox name="rating" {...props}/>
+      return <TextBoxRating name="rating" {...props}/>
     case 'selectBox':
-      return <SelectBox name="rating" {...props}/>
+      return <SelectBoxRating name="rating" {...props}/>
     case 'rateByStars':
       return <RateByStars  name="rating" {...props}/>
   }
